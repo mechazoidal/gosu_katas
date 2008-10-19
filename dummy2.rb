@@ -12,7 +12,7 @@ class Dummy2 < SubApp
     @main.draw_line(400, 0, Gosu::Color.new(0xffffffff), 400, 600, Gosu::Color.new(0xffffffff))
     @main.draw_line(0, 300, Gosu::Color.new(0xffffffff), 800, 300, Gosu::Color.new(0xffffffff))
     
-    @main.draw_triangle(, 0, Gosu::Color.new(0x0000ffff), 800, 600, Gosu::Color.new(0x0000ffff), 0, 480, Gosu::Color.new(0x00ffffff))
+    # @main.draw_triangle(, 0, Gosu::Color.new(0x0000ffff), 800, 600, Gosu::Color.new(0x0000ffff), 0, 480, Gosu::Color.new(0x00ffffff))
     # draw(text, x, y, z, factor_x=1, factor_y=1, color=0xffffffff, mode=:default)
     @font.draw("I'm another layer!!", 300, 200, 1, 1.0, 1.0, 0xffffff00)
     
