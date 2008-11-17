@@ -1,4 +1,9 @@
-# Core app that controls all SubApps in the game.
+require 'gosu'
+include Gosu
+# Core app that controls all SubApps in the application.
+# TODO: "app" is a misnomer, find a better name.
+# Layer? StateLayer?
+# Problem is that a Subapp has both a state, a layer, and an exclusive(?) lock on input...
 class MainApp < Gosu::Window
   attr_reader :apps
   

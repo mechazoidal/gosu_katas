@@ -5,12 +5,10 @@ rescue LoadError
   # In case you don't.
 end
 
-require 'gosu'
-require 'main'
+require 'mainapp'
 require 'subapp'
 require 'dummy'
 require 'dummy2'
-include Gosu
 
 # Constants
 Buttons = {
