@@ -1,0 +1,57 @@
+12/31/2008
+---
+If the MainApp/SubApp system is more like a state manager, use a DSL similar to the acts_as_state_machine plugin.
+( http://www-128.ibm.com/developerworks/java/library/j-cb03137/index.html )
+i.e.:
+
+intial_state :menu
+state :menu  # choose to enter game, check options, or quit
+state :game  # simulation environment
+state :map  # can look at the map screen, keypresses pan around the map showing current objects, but does not affect game(state is paused).
+state :quit_confirmation  # ask to exit game or to return to previous state
+
+event :ask_to_quit do
+  transitions :from => [:game, :map], :to => :quit_confirmation
+end
+
+event :start_game do
+  create_world(args)
+  transitions :from => [:menu, :map, :quit], :to => :withdrawn
+end
+
+event :end_game do
+  # quit to menu
+  destroy_world(args)
+  transitions :from => :game, :to => :menu
+end
+
+event :check_map do
+  pause_game  # optional, if you don't like letting the players freeze time
+  transitions :from => :game, :to => :map
+end
+
+event :put_away_map do
+  transitions :from => :map, :to => :game
+end
+
+event :really_quit do
+  # :terminate is a hard-coded state; cleans up the environment and exits the Gosu loop.
+  transitions :from => [:quit_confirmation, :menu], :to => :terminate
+end
+
+event :game_dont_quit do
+  transitions :from => :quit, :to => :game
+end
+event :map_dont_quit do
+  transitions :from => :quit, :to => :map
+end
+
+Something to note is that we need to retain state in some apps: if we ask to quit from the game, the game is paused and available behind the dialog box.
+For a map however, the game might continue while we are looking at the map(even though we are controlling the Map's state of what it's looking at). Or if we have neat HUD displays that pop up and show something while moving, but aren't affected by input.
+As it currently is, Subapp has both a state, a layer, and an exclusive(?) lock on input.
+So we might want to break it up:
+A State has state and objects: Game, Menu, Map, etc.
+An Overlay has drawing, but no input. HUDs, effects, etc.
+A Layer has drawing and input, but relies on the underlying State: Map
+
+One thing to note is that Nightly/Witch may have modeled Levels as SubApps. Not sure how we would handle this: make them all states? Or have a separate state table for Levels? Or does the Game subapp worry about this internally?
