@@ -1,4 +1,4 @@
-require 'mainapp'
+require File.expand_path(File.join(File.dirname(__FILE__), "spec_helper"))
 
 describe MainApp do
   before(:each) do
@@ -21,7 +21,7 @@ describe MainApp do
       @subapp = mock("SubApp")
       # TODO: how to respond to this?
       @subapp.stub!(:active=).and_return(true)
-      @
+      # @
       @main.push_app(@subapp)
     end
     it "should deactivate" do
