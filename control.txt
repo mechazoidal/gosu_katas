@@ -1,0 +1,24 @@
+For checking on control inputs, we want to use a FSM.
+Usually for fighting games, but I would think even a platformer might have some more options with one(SOTN, for example).
+
+pretty basic, but illustrates some of the complexity:
+http://www.petesqbsite.com/sections/tutorials/zines/qboa/11-finite.html
+
+Bachus' post illustrates some of the concepts: command buffering, cancels, priority:
+http://www.idevgames.com/forum/archive/index.php/t-3710.html
+
+
+Using a multi-tiered hierarchy for control: the Blender Game engine.
+Sensor(s) plugs into a Controller, which plugs into an Actuator.
+-Sensor takes input: either device input, or other things in the simulation(i.e. speed)
+-Controller is a "buffer": it can have multiple Sensors plugged into it, and only "activates" if all req's
+are met(i.e., activate if Sensor(RightMouse) and Sensor(MouseMovement) are both active)
+-Actuator affects an object in the simulation: move .10 in Y direction. Modifier allows for things like "while active, repeat every step" or "just once"
+All of them have general OR, NOT, XOR, etc. options.
+Multiple Sensors can plug into a controller, I'm assuming multiple Controllers can plug into an Actuator?
+
+So this way, you can dynamically drive bits in the simulation. Example: the Skate Girl demo game:
+"up": accelerate up to max speed
+"left/right": turn
+An animation for the character's upper body is plugged into the height off the ground(affects how much she hunkers down to shock-absorb)
+Arms are plugged into turning: turning makes her pull her arms in.
